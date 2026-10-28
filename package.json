@@ -1,0 +1,20 @@
+{
+  "name": "luxurystay-hospitality",
+  "version": "1.0.0",
+  "description": "LuxuryStay Hospitality — Five-Star Hotel & Resort Management System (MERN)",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "seed:admin": "cd backend && npm run seed:admin"
+  },
+  "keywords": [
+    "hotel-management",
+    "luxury-hospitality",
+    "mern",
+    "react",
+    "vite"
+  ],
+  "author": "LuxuryStay Hospitality",
+  "license": "ISC"
+}

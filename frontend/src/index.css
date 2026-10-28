@@ -1,0 +1,740 @@
+:root {
+  /* Exact luxury navy + champagne gold theme */
+  --bg-main: #071A31;
+  --bg-sidebar: #061529;
+  --primary-navy: #102B4C;
+  --card-bg: #0D2340;
+  --card-elevated: #143253;
+  --border-color: #263E59;
+  --border-subtle: rgba(214, 183, 121, 0.15);
+  
+  --text-primary: #F8FAFC;
+  --text-secondary: #A8B8CC;
+  --text-muted: #64748B;
+  
+  --gold: #D6B779;
+  --gold-hover: #E5C991;
+  --gold-muted: rgba(214, 183, 121, 0.12);
+  --gold-border: rgba(214, 183, 121, 0.35);
+  --gold-gradient: linear-gradient(135deg, #D6B779 0%, #C49E58 100%);
+  --navy-gradient: linear-gradient(180deg, #0A1F3A 0%, #071A31 100%);
+
+  --success: #27AE75;
+  --success-bg: rgba(39, 174, 117, 0.12);
+  --success-border: rgba(39, 174, 117, 0.3);
+
+  --danger: #E45B65;
+  --danger-bg: rgba(228, 91, 101, 0.12);
+  --danger-border: rgba(228, 91, 101, 0.3);
+
+  --warning: #E6AA45;
+  --warning-bg: rgba(230, 170, 69, 0.12);
+  --warning-border: rgba(230, 170, 69, 0.3);
+
+  --info: #55A7E8;
+  --info-bg: rgba(85, 167, 232, 0.12);
+  --info-border: rgba(85, 167, 232, 0.3);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.45);
+  --shadow-gold: 0 0 20px rgba(214, 183, 121, 0.2);
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-sidebar);
+}
+::-webkit-scrollbar-thumb {
+  background: #203A58;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background-color: var(--card-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(214, 183, 121, 0.2);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Base button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--gold-gradient);
+  color: #061529;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(214, 183, 121, 0.3);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--gold-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(214, 183, 121, 0.4);
+}
+
+.btn-secondary {
+  background: var(--primary-navy);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--card-elevated);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-outline {
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  background: transparent;
+}
+.btn-outline:hover:not(:disabled) {
+  background: var(--gold-muted);
+  border-color: var(--gold);
+}
+
+.btn-danger {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.btn-lg {
+  padding: 0.85rem 1.6rem;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.badge-available, .badge-success, .badge-confirmed, .badge-resolved, .badge-paid {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+}
+
+.badge-occupied, .badge-danger, .badge-cancelled, .badge-urgent, .badge-unpaid {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger-border);
+}
+
+.badge-reserved, .badge-info, .badge-checked_in, .badge-routine_cleaning {
+  background: var(--info-bg);
+  color: var(--info);
+  border: 1px solid var(--info-border);
+}
+
+.badge-cleaning, .badge-warning, .badge-pending, .badge-partial, .badge-high {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+
+.badge-maintenance, .badge-deep_cleaning, .badge-normal {
+  background: rgba(229, 140, 78, 0.15);
+  color: #F69D62;
+  border: 1px solid rgba(229, 140, 78, 0.35);
+}
+
+.badge-neutral {
+  background: rgba(168, 184, 204, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+  border-color: rgba(214, 183, 121, 0.25);
+}
+
+.card-elevated {
+  background: var(--card-elevated);
+}
+
+/* Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.table th {
+  background: var(--primary-navy);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1.2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(20, 50, 83, 0.6);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 13, 24, 0.78);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  max-width: 650px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg), var(--shadow-gold);
+  animation: scaleIn 0.2s ease-out;
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: rgba(6, 21, 41, 0.5);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Forms */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.form-error {
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #0D2340 25%, #143253 50%, #0D2340 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeletonPulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Empty states */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-secondary);
+}
+
+.empty-state svg {
+  color: var(--gold);
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
+  color: var(--text-muted);
+}
+
+/* Toast alert banner */
+.toast-banner {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.toast-error {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: #FF8F97;
+}
+
+.toast-success {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: #72E2B0;
+}
+
+/* ==========================================================================
+   Elevated Luxury Animations & Dynamic Micro-Interactions
+   ========================================================================== */
+
+/* Gentle Floating Animation */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-0.5deg);
+  }
+}
+
+/* Radiant Gold Glow Breathing Animation */
+@keyframes goldGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(214, 183, 121, 0.25), 0 4px 12px rgba(0, 0, 0, 0.35);
+    border-color: rgba(214, 183, 121, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(214, 183, 121, 0.55), 0 8px 24px rgba(0, 0, 0, 0.45);
+    border-color: rgba(214, 183, 121, 0.7);
+  }
+}
+
+/* Light Sheen / Shimmer Sweep on Luxury Buttons & Cards */
+@keyframes shimmerSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Sparkling Star Twinkle */
+@keyframes sparkleTwinkle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Online Active Session Pulse */
+@keyframes livePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(39, 174, 117, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(39, 174, 117, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(39, 174, 117, 0);
+  }
+}
+
+/* Ambient Radial Rotation */
+@keyframes rotateAmbient {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Infinite Marquee Scroll for Luxury Accolades */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Slide Up Fade In */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Reusable Animation Utilities --- */
+.anim-float {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+.anim-float-reverse {
+  animation: floatReverse 5.5s ease-in-out infinite;
+}
+
+.anim-glow {
+  animation: goldGlowPulse 3s ease-in-out infinite;
+}
+
+.anim-twinkle {
+  animation: sparkleTwinkle 2.5s ease-in-out infinite;
+}
+
+.anim-slide-up {
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-slide-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-slide-right {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* Stagger delay helpers */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* Active Session Badge Pulse */
+.badge-live-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #27AE75;
+  border-radius: 50%;
+  display: inline-block;
+  animation: livePulse 2s infinite;
+  box-shadow: 0 0 6px #27AE75;
+}
+
+/* Luxury Interactive Card Lift */
+.card-luxury-hover {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease !important;
+}
+
+.card-luxury-hover:hover {
+  transform: translateY(-8px) scale(1.012) !important;
+  border-color: #D6B779 !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(214, 183, 121, 0.25) !important;
+}
+
+/* Shimmer Button Effect */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: rotate(30deg) translateY(-100%);
+  transition: transform 0.75s ease;
+  pointer-events: none;
+}
+
+.btn-shimmer:hover::after {
+  transform: rotate(30deg) translateY(100%);
+}
+
+/* Luxury Logo Hover Interactions */
+.luxury-logo-animated {
+  transition: transform 0.25s ease;
+}
+
+.luxury-logo-animated:hover .luxury-crest-box {
+  transform: scale(1.06) rotate(1deg);
+  filter: drop-shadow(0 6px 18px rgba(214, 183, 121, 0.65));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+
+.luxury-logo-animated:hover .luxury-brand-name {
+  color: #FFF1D0 !important;
+  text-shadow: 0 0 12px rgba(214, 183, 121, 0.5);
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+/* Glassmorphism Luxury Panel */
+.glass-luxury-panel {
+  background: rgba(13, 35, 64, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(214, 183, 121, 0.25);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Marquee Infinite Strip */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Printable Invoice Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-invoice, .printable-invoice * {
+    visibility: visible;
+  }
+  .printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    padding: 30px !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
