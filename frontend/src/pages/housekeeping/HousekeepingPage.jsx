@@ -4,19 +4,27 @@ import { useAuth } from '../../context/AuthContext';
 import {
   Sparkles,
   PlusCircle,
-  Search,
   CheckCircle,
   AlertCircle,
-  Clock,
-  User,
-  BedDouble,
   X,
   RefreshCw,
-  SlidersHorizontal,
 } from 'lucide-react';
 
+// Role ko normalize karta hai: "House_Keeping" / "house keeping" -> "housekeeping"
+const normalizeRole = (role) => String(role || '').toLowerCase().replace(/[\s_-]/g, '');
+
+// Different backend response shapes handle karta hai
+const extractUserList = (data) => {
+  if (Array.isArray(data)) return data;
+  return data?.staff || data?.users || data?.data || [];
+};
+
 export const HousekeepingPage = () => {
-  const { isFrontDesk, isHousekeeping } = useAuth();
+  const { user, isFrontDesk } = useAuth();
+
+  // Admin, manager aur receptionist teeno task assign kar sakte hain
+  const canAssign =
+    !!isFrontDesk || ['admin', 'manager', 'receptionist'].includes(normalizeRole(user?.role));
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,6 +39,7 @@ export const HousekeepingPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [availableRooms, setAvailableRooms] = useState([]);
   const [housekeepingStaff, setHousekeepingStaff] = useState([]);
+  const [staffError, setStaffError] = useState('');
 
   // Form
   const [formData, setFormData] = useState({
@@ -59,27 +68,55 @@ export const HousekeepingPage = () => {
     }
   };
 
-  const loadDependencies = async () => {
+  const loadRooms = async () => {
     try {
       const rRes = await roomsApi.listRooms({ active: 'true' });
       setAvailableRooms(rRes.data?.rooms || []);
-
-      if (isFrontDesk) {
-        const uRes = await usersApi.getAllUsers();
-        if (uRes.data?.staff) {
-          const hk = uRes.data.staff.filter((s) => s.role === 'housekeeping');
-          setHousekeepingStaff(hk);
-        }
-      }
     } catch (e) {
-      console.warn('Failed to load housekeeping dependencies:', e.message);
+      console.warn('Failed to load rooms:', e.message);
     }
   };
 
+  const loadStaff = async () => {
+    setStaffError('');
+    try {
+      const uRes = await usersApi.getAllUsers();
+      const list = extractUserList(uRes.data);
+      const hk = list.filter((s) => normalizeRole(s.role) === 'housekeeping');
+      setHousekeepingStaff(hk);
+    } catch (e) {
+      console.warn('Failed to load housekeeping staff:', e.message);
+      setStaffError(
+        e.response?.status === 403
+          ? 'Aapko staff list dekhne ki permission nahi hai (403). Backend route check karein.'
+          : e.response?.data?.message || 'Could not load housekeeping staff.'
+      );
+    }
+  };
+
+  // Tasks filter badalne par reload hon
   useEffect(() => {
     fetchTasks();
-    loadDependencies();
   }, [statusFilter]);
+
+  // Rooms sirf ek dafa
+  useEffect(() => {
+    loadRooms();
+  }, []);
+
+  // Staff tab load hoga jab user ka role maloom ho aur wo assign kar sakta ho
+  useEffect(() => {
+    if (canAssign) loadStaff();
+  }, [canAssign]);
+
+  const resetForm = () =>
+    setFormData({
+      roomId: '',
+      taskType: 'routine_cleaning',
+      priority: 'normal',
+      assignedToId: '',
+      notes: '',
+    });
 
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
@@ -104,6 +141,7 @@ export const HousekeepingPage = () => {
       const res = await housekeepingApi.createTask(payload);
       setSuccessMsg(res.data?.message || 'Housekeeping task assigned.');
       setIsCreateModalOpen(false);
+      resetForm();
       fetchTasks();
     } catch (err) {
       setErrorMsg(err.response?.data?.message || 'Failed to create task.');
@@ -143,13 +181,14 @@ export const HousekeepingPage = () => {
           </p>
         </div>
 
-        {isFrontDesk && (
+        {canAssign && (
           <button
             onClick={() => {
               if (availableRooms.length > 0 && !formData.roomId) {
                 setFormData((prev) => ({ ...prev, roomId: availableRooms[0]._id }));
               }
               setIsCreateModalOpen(true);
+              if (housekeepingStaff.length === 0) loadStaff();
             }}
             className="btn btn-primary"
           >
@@ -392,6 +431,16 @@ export const HousekeepingPage = () => {
                       </option>
                     ))}
                   </select>
+                  {staffError && (
+                    <p style={{ color: '#E6AA45', fontSize: '0.78rem', marginTop: '0.35rem' }}>
+                      {staffError}
+                    </p>
+                  )}
+                  {!staffError && housekeepingStaff.length === 0 && (
+                    <p style={{ color: '#A8B8CC', fontSize: '0.78rem', marginTop: '0.35rem' }}>
+                      Koi housekeeping staff nahi mila.
+                    </p>
+                  )}
                 </div>
 
                 <div className="form-group">

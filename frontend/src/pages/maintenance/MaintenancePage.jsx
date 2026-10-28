@@ -4,19 +4,27 @@ import { useAuth } from '../../context/AuthContext';
 import {
   Wrench,
   PlusCircle,
-  Search,
   CheckCircle,
   AlertTriangle,
-  Clock,
-  User,
-  BedDouble,
   X,
   RefreshCw,
-  SlidersHorizontal,
 } from 'lucide-react';
 
+// Role ko normalize karta hai: "Maintenance" / "maintenance " -> "maintenance"
+const normalizeRole = (role) => String(role || '').toLowerCase().replace(/[\s_-]/g, '');
+
+// Different backend response shapes handle karta hai
+const extractUserList = (data) => {
+  if (Array.isArray(data)) return data;
+  return data?.staff || data?.users || data?.data || [];
+};
+
 export const MaintenancePage = () => {
-  const { isFrontDesk, isMaintenance } = useAuth();
+  const { user, isFrontDesk } = useAuth();
+
+  // Admin, manager aur receptionist teeno issue log / assign kar sakte hain
+  const canAssign =
+    !!isFrontDesk || ['admin', 'manager', 'receptionist'].includes(normalizeRole(user?.role));
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +43,7 @@ export const MaintenancePage = () => {
 
   const [availableRooms, setAvailableRooms] = useState([]);
   const [maintenanceStaff, setMaintenanceStaff] = useState([]);
+  const [staffError, setStaffError] = useState('');
 
   // Form State
   const [formData, setFormData] = useState({
@@ -64,25 +73,46 @@ export const MaintenancePage = () => {
     }
   };
 
-  const loadDependencies = async () => {
+  const loadRooms = async () => {
     try {
       const rRes = await roomsApi.listRooms({ active: 'true' });
       setAvailableRooms(rRes.data?.rooms || []);
-
-      const uRes = await usersApi.getAllUsers();
-      if (uRes.data?.staff) {
-        const ms = uRes.data.staff.filter((s) => s.role === 'maintenance');
-        setMaintenanceStaff(ms);
-      }
     } catch (e) {
-      console.warn('Failed to load maintenance dependencies:', e.message);
+      console.warn('Failed to load rooms:', e.message);
     }
   };
 
+  const loadStaff = async () => {
+    setStaffError('');
+    try {
+      const uRes = await usersApi.getAllUsers();
+      const list = extractUserList(uRes.data);
+      const ms = list.filter((s) => normalizeRole(s.role) === 'maintenance');
+      setMaintenanceStaff(ms);
+    } catch (e) {
+      console.warn('Failed to load maintenance staff:', e.message);
+      setStaffError(
+        e.response?.status === 403
+          ? 'Aapko staff list dekhne ki permission nahi hai (403). Backend route check karein.'
+          : e.response?.data?.message || 'Could not load maintenance staff.'
+      );
+    }
+  };
+
+  // Requests filter badalne par reload hon
   useEffect(() => {
     fetchRequests();
-    loadDependencies();
   }, [statusFilter]);
+
+  // Rooms sirf ek dafa
+  useEffect(() => {
+    loadRooms();
+  }, []);
+
+  // Staff tab load hoga jab user ka role maloom ho aur wo assign kar sakta ho
+  useEffect(() => {
+    if (canAssign) loadStaff();
+  }, [canAssign]);
 
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
@@ -175,13 +205,14 @@ export const MaintenancePage = () => {
           </p>
         </div>
 
-        {isFrontDesk && (
+        {canAssign && (
           <button
             onClick={() => {
               if (availableRooms.length > 0 && !formData.roomId) {
                 setFormData((prev) => ({ ...prev, roomId: availableRooms[0]._id }));
               }
               setIsCreateModalOpen(true);
+              if (maintenanceStaff.length === 0) loadStaff();
             }}
             className="btn btn-primary"
           >
@@ -447,6 +478,16 @@ export const MaintenancePage = () => {
                       </option>
                     ))}
                   </select>
+                  {staffError && (
+                    <p style={{ color: '#E6AA45', fontSize: '0.78rem', marginTop: '0.35rem' }}>
+                      {staffError}
+                    </p>
+                  )}
+                  {!staffError && maintenanceStaff.length === 0 && (
+                    <p style={{ color: '#A8B8CC', fontSize: '0.78rem', marginTop: '0.35rem' }}>
+                      Koi maintenance staff nahi mila.
+                    </p>
+                  )}
                 </div>
 
                 <div className="form-group">
