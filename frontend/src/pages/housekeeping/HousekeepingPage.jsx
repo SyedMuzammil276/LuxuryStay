@@ -80,7 +80,7 @@ export const HousekeepingPage = () => {
   const loadStaff = async () => {
     setStaffError('');
     try {
-      const uRes = await usersApi.getAllUsers();
+      const uRes = await usersApi.getAssignableStaff('housekeeping');
       const list = extractUserList(uRes.data);
       const hk = list.filter((s) => normalizeRole(s.role) === 'housekeeping');
       setHousekeepingStaff(hk);

@@ -85,7 +85,7 @@ export const MaintenancePage = () => {
   const loadStaff = async () => {
     setStaffError('');
     try {
-      const uRes = await usersApi.getAllUsers();
+      const uRes = await usersApi.getAssignableStaff('maintenance');
       const list = extractUserList(uRes.data);
       const ms = list.filter((s) => normalizeRole(s.role) === 'maintenance');
       setMaintenanceStaff(ms);

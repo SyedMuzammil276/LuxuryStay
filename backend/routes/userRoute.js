@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createStaff, getAllUser, getUserbyId, toggleStaffStatus, updateStaff } from "../controllers/userController.js";
+import { createStaff, getAllUser, getUserbyId, toggleStaffStatus, updateStaff, getAssignableStaff} from "../controllers/userController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import roleMiddleware from "../middleware/roleMiddleware.js";
 
@@ -9,6 +9,13 @@ const router = express.Router();
 router.post("/", authMiddleware, roleMiddleware(["admin"]), createStaff);
 
 router.get("/getAllUser", authMiddleware, roleMiddleware(["admin"]), getAllUser);
+
+router.get(
+  "/assignable",
+  authMiddleware,
+  roleMiddleware(["admin", "manager", "receptionist"]),
+  getAssignableStaff
+);
 
 router.get("/:id", authMiddleware, roleMiddleware(["admin"]), getUserbyId);
 

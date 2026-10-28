@@ -12,6 +12,8 @@ export const authApi = {
 // ================= USERS / STAFF API =================
 export const usersApi = {
   getAllUsers: () => apiClient.get('/users/getAllUser'),
+  // Admin, manager, receptionist: task assign dropdown ke liye (role = 'housekeeping' | 'maintenance')
+  getAssignableStaff: (role) => apiClient.get('/users/assignable', { params: { role } }),
   getUserById: (id) => apiClient.get(`/users/${id}`),
   createStaff: (data) => apiClient.post('/users', data),
   updateStaff: (id, data) => apiClient.put(`/users/${id}`, data),

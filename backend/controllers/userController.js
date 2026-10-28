@@ -384,3 +384,16 @@ await createNotification({
     }
 
 }
+
+export const getAssignableStaff = async (req, res) => {
+  try {
+    const { role } = req.query; 
+    const allowed = ["housekeeping", "maintenance"];
+    const filter = allowed.includes(role) ? { role } : { role: { $in: allowed } };
+
+    const staff = await User.find(filter).select("name email role");
+    res.status(200).json({ staff });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
